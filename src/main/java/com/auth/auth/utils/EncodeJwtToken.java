@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class EncodeJwtToken {
     //Sample method to construct a JWT
-    private String createJWT(String id, String issuer, String subject, long ttlMillis) {
+    public String createJWT(String id, String issuer, String subject, long ttlMillis) {
 
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;

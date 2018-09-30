@@ -6,7 +6,7 @@ import io.jsonwebtoken.Claims;
 
 public class DecodeJwtToken {
     //Sample method to validate and read the JWT
-    private void parseJWT(String jwt) {
+    public void parseJWT(String jwt) {
 
         //This line will throw an exception if it is not a signed JWS (as expected)
         Claims claims = Jwts.parser()
