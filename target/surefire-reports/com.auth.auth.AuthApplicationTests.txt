@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.auth.auth.AuthApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.786 s - in com.auth.auth.AuthApplicationTests
