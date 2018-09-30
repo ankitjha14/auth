@@ -21,7 +21,7 @@ public class RegenerateAccessToken {
         try {
             mayBeUser = userRepository.findByRefreshToken(refreshToken).get(0);
 
-            if (System.currentTimeMillis() - mayBeUser.getRefreshTokenCreationTime() >= 160000) {
+            if (System.currentTimeMillis() - mayBeUser.getRefreshTokenCreationTime() >= 1600000) {
                 throw new CustomException(401);
             }
 
@@ -29,7 +29,7 @@ public class RegenerateAccessToken {
             throw new CustomException(401);
         }
 
-        if (System.currentTimeMillis() - mayBeUser.getAccessTokenCreationTime() >= 80000) {
+        if (System.currentTimeMillis() - mayBeUser.getAccessTokenCreationTime() >= 800000) {
             long ts = System.currentTimeMillis();
             userRepository.updateAccessTokenByRefreshToken(generateAccessToken(), ts, refreshToken);
         }

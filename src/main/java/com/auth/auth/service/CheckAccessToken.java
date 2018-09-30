@@ -19,7 +19,7 @@ public class CheckAccessToken {
 
         try {
             mayBeUser = userRepository.findByAccessToken(accessToken).get(0);
-            if (System.currentTimeMillis() - mayBeUser.getAccessTokenCreationTime() >= 80000) {
+            if (System.currentTimeMillis() - mayBeUser.getAccessTokenCreationTime() >= 800000) {
                 throw new CustomException(401);
             }
 
