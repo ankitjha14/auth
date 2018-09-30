@@ -2,31 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d81d109-53a1-48b8-9b4c-8d150617f9ff" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/AuthApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/controller/AccessTokenController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/controller/CheckAccessTokenController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/controller/SendOtpContorller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/controller/VerifyOtpController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/model/AccessToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/model/Otp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/model/RefreshToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/model/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/service/CheckAccessToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/service/RegenerateAccessToken.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/service/SaveUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/utils/AccessTokenGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/utils/CustomException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/utils/OtpGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auth/auth/utils/RefreshTokenGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/auth/auth/AuthApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -64,6 +41,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="1" />
+          <entry key="gitignore" value="1" />
           <entry key="java" value="18" />
           <entry key="properties" value="1" />
           <entry key="xml" value="1" />
@@ -73,6 +51,7 @@
         <counts>
           <entry key="CLASS" value="1" />
           <entry key="JAVA" value="18" />
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="Properties" value="1" />
           <entry key="XML" value="1" />
         </counts>
@@ -80,7 +59,17 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="556">
+              <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -124,6 +113,7 @@
         <option value="$PROJECT_DIR$/src/main/java/com/auth/auth/controller/AccessTokenController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/auth/auth/controller/CheckAccessTokenController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/auth/auth/service/RegenerateAccessToken.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -177,7 +167,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538299803518" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538300335795" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
@@ -302,6 +292,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1293" height="743" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.28789094" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -532,6 +523,13 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="556">
+          <caret line="39" column="11" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="11" />
         </state>
       </provider>
     </entry>
