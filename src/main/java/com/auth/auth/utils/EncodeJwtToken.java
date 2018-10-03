@@ -1,6 +1,6 @@
 package com.auth.auth.utils;
 
-import com.auth.auth.model.User;
+import com.auth.auth.model.GoogleUser;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,13 +9,11 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class EncodeJwtToken {
     //Sample method to construct a JWT
-    public String createJWT(String id, String issuer, String subject, long ttlMillis, Map<String,String> userData) {
+    public String createJWT(String id, String issuer, String subject, long ttlMillis, Map<String, String> userData) {
 
         //The JWT signature algorithm we will be using to sign the token
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
