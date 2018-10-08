@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class GoogleUser {
+public class User {
     @Id
     @GeneratedValue
     private long id;
@@ -26,20 +26,20 @@ public class GoogleUser {
 
     private String picture;
 
-    public GoogleUser(String firstname, String lastname, String email, String picture) {
+    public User(String firstname, String lastname, String email, String picture) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.picture = picture;
     }
 
-    public GoogleUser(String firstname, String lastname, String phone) {
+    public User(String firstname, String lastname, String phone) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.phone = phone;
     }
 
-    public GoogleUser(){
+    public User(){
     }
 
     public String getFirstname() {

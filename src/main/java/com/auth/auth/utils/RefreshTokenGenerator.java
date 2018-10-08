@@ -6,7 +6,7 @@ public class RefreshTokenGenerator {
     public static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     // 2048 bit keys should be secure until 2030 - https://web.archive.org/web/20170417095741/https://www.emc.com/emc-plus/rsa-labs/historical/twirl-and-rsa-key-size.htm
-    public static final int SECURE_TOKEN_LENGTH = 25;
+    public static final int SECURE_TOKEN_LENGTH = 60;
 
     private static final SecureRandom random = new SecureRandom();
 

@@ -1,7 +1,7 @@
 package com.auth.auth.controller;
 
-import com.auth.auth.model.GoogleUser;
-import com.auth.auth.service.SaveUser;
+import com.auth.auth.model.User;
+import com.auth.auth.service.RegisterUser;
 import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponse;
@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,85 +36,90 @@ import java.util.Collections;
 @RestController
 public class GoogleAuthenticationController {
 
-	private static final String APPLICATION_NAME = "Test";
-	private static HttpTransport httpTransport;
-	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+    private static final String APPLICATION_NAME = "Test";
+    private static HttpTransport httpTransport;
+    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-	GoogleClientSecrets clientSecrets;
-	GoogleAuthorizationCodeFlow flow;
-	Credential credential;
+    GoogleClientSecrets clientSecrets;
+    GoogleAuthorizationCodeFlow flow;
+    Credential credential;
 
-	@Value("${gmail.client.clientId}")
-	private String clientId;
+    @Value("${gmail.client.clientId}")
+    private String clientId;
 
-	@Value("${gmail.client.clientSecret}")
-	private String clientSecret;
+    @Value("${gmail.client.clientSecret}")
+    private String clientSecret;
 
-	@Value("${gmail.client.redirectUri}")
-	private String redirectUri;
+    @Value("${gmail.client.redirectUri}")
+    private String redirectUri;
 
-	@RequestMapping(value = "/login/gmail", method = RequestMethod.GET)
-	public RedirectView googleConnectionStatus(HttpServletRequest request) throws Exception {
-		return new RedirectView(authorize());
-	}
+    @RequestMapping(value = "/login/gmail", method = RequestMethod.GET)
+    public RedirectView googleConnectionStatus(HttpServletRequest request) throws Exception {
+        return new RedirectView(authorize());
+    }
 
-	@Autowired
-	SaveUser saveUser;
+    @Autowired
+    RegisterUser registerUser;
 
-	@RequestMapping(value = "/login/gmailCallback", method = RequestMethod.GET, params = "code")
-	public ResponseEntity<String> oauth2Callback(@RequestParam(value = "code") String code) {
+    @RequestMapping(value = "/login/gmailCallback", method = RequestMethod.GET, params = "code")
+    public ResponseEntity<String> oauth2Callback(@RequestParam(value = "code") String code) {
 
-		JSONObject json = new JSONObject();
-		JSONArray arr = new JSONArray();
+        JSONObject json = new JSONObject();
+        JSONArray arr = new JSONArray();
         Userinfoplus userinfo = null;
-		try {
-			TokenResponse response = flow.newTokenRequest(code).setRedirectUri(redirectUri).execute();
-			credential = flow.createAndStoreCredential(response, "userID");
+        try {
+            TokenResponse response = flow.newTokenRequest(code).setRedirectUri(redirectUri).execute();
+            credential = flow.createAndStoreCredential(response, "userID");
 
-			Oauth2 oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
-					APPLICATION_NAME).build();
+            Oauth2 oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(
+                    APPLICATION_NAME).build();
 
-			userinfo = oauth2.userinfo().v2().me().get().execute();
+            userinfo = oauth2.userinfo().v2().me().get().execute();
             System.out.println(userinfo.toString());
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 
-			System.out.println("exception cached ");
-			e.printStackTrace();
-		}
+            System.out.println("exception cached ");
+            e.printStackTrace();
+        }
 
-		GoogleUser user = new GoogleUser(userinfo.getGivenName(),
-				userinfo.getFamilyName(),
-				userinfo.getEmail(),
-				userinfo.getPicture());
-        GoogleUser savedUser = saveUser.save(user);
-		if(savedUser!=null){
-			if(saveUser.generateRefreshToken(savedUser)!=null){
-				return new ResponseEntity<>(saveUser.generateJwtToken(user), HttpStatus.OK);
-			}
-		}
+        User user = new User(userinfo.getGivenName(),
+                userinfo.getFamilyName(),
+                userinfo.getEmail(),
+                userinfo.getPicture());
+        User savedUser = registerUser.save(user);
+        if (savedUser != null) {
+            String refToken = registerUser.generateRefreshToken(savedUser);
+            if (refToken != null) {
+                String jwtToken = registerUser.generateJwtToken(user);
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Set-Cookie", "refToken=" + refToken);
+                headers.add("Set-Cookie", "jwtToken=" + jwtToken);
+                return new ResponseEntity<String>("Successfully logged in!!", headers, HttpStatus.OK);
+            }
+        }
 
 
-		return new ResponseEntity<>("try again", HttpStatus.UNAUTHORIZED);
-	}
+        return new ResponseEntity<>("try again", HttpStatus.UNAUTHORIZED);
+    }
 
-	private String authorize() throws Exception {
-		AuthorizationCodeRequestUrl authorizationUrl;
-		if (flow == null) {
-			Details web = new Details();
-            System.out.println(clientId+"***/n"+clientSecret);
-			web.setClientId(clientId);
-			web.setClientSecret(clientSecret);
-			clientSecrets = new GoogleClientSecrets().setWeb(web);
-			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-			flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets,
-					Collections.singleton(PlusScopes.USERINFO_EMAIL)).build();
-		}
-		authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(redirectUri);
+    private String authorize() throws Exception {
+        AuthorizationCodeRequestUrl authorizationUrl;
+        if (flow == null) {
+            Details web = new Details();
+            System.out.println(clientId + "***/n" + clientSecret);
+            web.setClientId(clientId);
+            web.setClientSecret(clientSecret);
+            clientSecrets = new GoogleClientSecrets().setWeb(web);
+            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets,
+                    Collections.singleton(PlusScopes.USERINFO_EMAIL)).build();
+        }
+        authorizationUrl = flow.newAuthorizationUrl().setRedirectUri(redirectUri);
 
-		System.out.println("gamil authorizationUrl ->" + authorizationUrl);
-		return authorizationUrl.build();
-	}
+        System.out.println("gamil authorizationUrl ->" + authorizationUrl);
+        return authorizationUrl.build();
+    }
 
 
 }
