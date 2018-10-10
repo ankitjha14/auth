@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 
 @Controller
@@ -62,7 +63,7 @@ public class GoogleAuthenticationController {
     RegisterUser registerUser;
 
     @RequestMapping(value = "/login/gmailCallback", method = RequestMethod.GET, params = "code")
-    public ResponseEntity<String> oauth2Callback(@RequestParam(value = "code") String code) {
+    public ResponseEntity<String> oauth2Callback(@RequestParam(value = "code") String code, HttpServletResponse res) {
 
         JSONObject json = new JSONObject();
         JSONArray arr = new JSONArray();
@@ -92,15 +93,22 @@ public class GoogleAuthenticationController {
             String refToken = registerUser.generateRefreshToken(savedUser);
             if (refToken != null) {
                 String jwtToken = registerUser.generateJwtToken(user);
-                HttpHeaders headers = new HttpHeaders();
-                headers.add("Set-Cookie", "refToken=" + refToken);
-                headers.add("Set-Cookie", "jwtToken=" + jwtToken);
-                return new ResponseEntity<String>("Successfully logged in!!", headers, HttpStatus.OK);
+                res.addCookie(getCookie(refToken, "refToken"));
+                res.addCookie(getCookie(jwtToken, "jwtToken"));
+
+                return new ResponseEntity<String>("Successfully logged in!!", HttpStatus.OK);
             }
         }
 
 
         return new ResponseEntity<>("try again", HttpStatus.UNAUTHORIZED);
+    }
+
+    private Cookie getCookie(String value, String name) {
+        Cookie refTokenCookie = new Cookie(name, value);
+        refTokenCookie.setHttpOnly(true);
+        refTokenCookie.setPath("/");
+        return refTokenCookie;
     }
 
     private String authorize() throws Exception {

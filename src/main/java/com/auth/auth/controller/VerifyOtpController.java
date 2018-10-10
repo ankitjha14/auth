@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+
 @RestController
 public class VerifyOtpController {
 
@@ -19,7 +23,7 @@ public class VerifyOtpController {
 
 
     @PostMapping("/verify")
-    public ResponseEntity<String> verify(@RequestBody Otp otp) {
+    public ResponseEntity<String> verify(@RequestBody Otp otp, HttpServletResponse res) {
         if (verifyOtp(otp.getOtp())) {
 
             User user = new User(otp.firstname, otp.lastname, otp.phone);
@@ -28,15 +32,22 @@ public class VerifyOtpController {
                 String refToken = registerUser.generateRefreshToken(savedUser);
                 if (refToken != null) {
                     String jwtToken = registerUser.generateJwtToken(user);
-                    HttpHeaders headers = new HttpHeaders();
-                    headers.add("Set-Cookie", "refToken=" + refToken);
-                    headers.add("Set-Cookie", "jwtToken=" + jwtToken);
-                    return new ResponseEntity<String>("Successfully logged in!!", headers, HttpStatus.OK);
+                    res.addCookie(getCookie(refToken, "refToken"));
+                    res.addCookie(getCookie(jwtToken, "jwtToken"));
+
+                    return new ResponseEntity<String>("Successfully logged in!!", HttpStatus.OK);
                 }
             }
         }
 
         return new ResponseEntity<>("try again", HttpStatus.UNAUTHORIZED);
+    }
+
+    private Cookie getCookie(String value, String name) {
+        Cookie refTokenCookie = new Cookie(name, value);
+        refTokenCookie.setHttpOnly(true);
+        refTokenCookie.setPath("/");
+        return refTokenCookie;
     }
 
     private boolean verifyOtp(String otp) {

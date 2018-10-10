@@ -32,6 +32,8 @@ public class AuthorisationFilter implements Filter {
 
         String jwtToken = fetchToken(cookies, "jwtToken");
         String refToken = fetchToken(cookies, "refToken");
+        System.out.println("jwt                    " + jwtToken);
+        System.out.println("ref                    " + refToken);
         try {
             if (jwtTokenService.verifyJWT(jwtToken) == null) {
 
@@ -62,7 +64,6 @@ public class AuthorisationFilter implements Filter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(tokenType)) {
-                    System.out.println(cookie.getValue());
                     return cookie.getValue();
 
                 }
